@@ -1,0 +1,32 @@
+export const users = [
+  {
+    id: '1',
+    email: 'ctunjano@mail.com',
+    name: 'Carlos Tunjano',
+    password: 'Pass*123',
+    address: 'Calle 123',
+    phone: '573102581245',
+    country: 'Colombia',
+    city: 'Bogotá',
+  },
+  {
+    id: '2',
+    email: 'nbulla@mail.com',
+    name: 'Natalia Buula',
+    password: 'Pass*123',
+    address: 'Calle 456',
+    phone: '573102582356',
+    country: 'Colombia',
+    city: 'Bogotá',
+  },
+  {
+    id: '3',
+    email: 'ecortes@mail.com',
+    name: 'Erika Cortés',
+    password: 'Pass*123',
+    address: 'Calle 789',
+    phone: '573102584578',
+    country: 'Colombia',
+    city: 'Bogotá',
+  },
+];

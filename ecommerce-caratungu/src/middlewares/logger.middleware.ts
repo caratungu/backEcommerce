@@ -12,10 +12,7 @@ export function LoggerMiddleware(
     hour: '2-digit',
     minute: '2-digit',
   };
-  const currentDateTime: string = new Date().toLocaleDateString(
-    'es-Co',
-    options,
-  );
+  const currentDateTime: string = new Date().toLocaleDateString('es-Co', options);
   console.log(
     `Estás ejecutando un método ${req.method} en la ruta ${req.url} <---> ${currentDateTime}`,
   );
