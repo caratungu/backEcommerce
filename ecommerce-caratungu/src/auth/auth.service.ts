@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { UsersRepository } from 'src/users/users.repository';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly usersRepository: UsersRepository) {}
+  constructor(private readonly usersService: UsersService) {}
   getAuth() {
     return 'Get auth';
   }
   
   userSignin(userInfo: any) {
-    return this.usersRepository.loginUser(userInfo);
+    return this.usersService.loginUser(userInfo);
   }
 }

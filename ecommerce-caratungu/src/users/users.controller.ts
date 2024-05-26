@@ -13,6 +13,7 @@ import { UsersService } from './users.service';
 import { User } from './user.interface';
 import { ReqUserGuard } from 'src/guards/reqUser.guard';
 import { AuthGuard } from 'src/auth/auth.guard';
+import IUserDto from './usersDto';
 
 @Controller('users')
 export class UsersController {
@@ -27,25 +28,30 @@ export class UsersController {
   @Get(':id')
   @UseGuards(AuthGuard)
   getUserById(@Param('id') id: string) {
-    return this.usersService.getUserById(Number(id));
+    return this.usersService.getUserById(id);
   }
   
   @Post()
   @UseGuards(ReqUserGuard)
-  createUser(@Body() user: Omit<User, 'id'>) {
+  createUser(@Body() user: IUserDto) {
     return this.usersService.createUser(user);
   }
   
   @Put(':id')
   @UseGuards(AuthGuard)
   @UseGuards(ReqUserGuard)
-  updateUser(@Param('id') id: string, @Body() user: Omit<User, 'id'>) {
-    return this.usersService.updateUser(Number(id), user);
+  updateUser(@Param('id') id: string, @Body() user: IUserDto) {
+    return this.usersService.updateUser(id, user);
   }
   
   @Delete(':id')
   @UseGuards(AuthGuard)
   deleteUser(@Param('id') id: string) {
-    return this.usersService.deleteUser(Number(id));
+    return this.usersService.deleteUser(id);
+  }
+
+  @Post('seeder')
+  preloadUsers() {
+    return this.usersService.preloadUsers();
   }
 }

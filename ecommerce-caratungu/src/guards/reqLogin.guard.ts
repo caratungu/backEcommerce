@@ -1,10 +1,13 @@
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { Request } from 'express';
 import { Observable } from 'rxjs';
 
 function validateRequest(req: Request) {
   const { email, password } = req.body;
-  return email && password;
+  if (!email || !password) {
+    throw new UnauthorizedException ('Información incompleta')
+  }
+  return true;
 }
 
 @Injectable()
