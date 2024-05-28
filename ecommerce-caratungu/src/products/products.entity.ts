@@ -18,6 +18,7 @@ export class Product {
 
   @Column({
     nullable: false,
+    type: 'text',
   })
   description: string;
 
@@ -35,9 +36,12 @@ export class Product {
   })
   stock: number;
 
-  @Column()
+  @Column({
+    type: 'text',
+    default: '',
+  })
   imgUrl: string; //! Incluir imagen por defecto
 
   @ManyToOne(() => Category, (category) => category.products)
-  category: Category | Category['name'];
+  category: Category | Category['id'];
 }

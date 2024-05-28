@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
+import { LoginUserDto } from './dtos/LoginUser.dto';
 
 @Injectable()
 export class AuthService {
@@ -8,7 +9,7 @@ export class AuthService {
     return 'Get auth';
   }
   
-  userSignin(userInfo: any) {
+  userSignin(userInfo: LoginUserDto) {
     return this.usersService.loginUser(userInfo);
   }
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { UsersRepository } from './users.repository';
-import { User } from './user.interface';
-import IUserDto from './usersDto';
+import { CreateUserDto } from './dtos/CreateUser.dto';
+import { LoginUserDto } from 'src/auth/dtos/LoginUser.dto';
 
 @Injectable()
 export class UsersService {
@@ -10,16 +10,16 @@ export class UsersService {
   getUsers(page: number, limit: number) {
     return this.usersRepository.getUsers(page, limit);
   }
-  
+
   getUserById(id: string) {
     return this.usersRepository.getUserById(id);
   }
 
-  createUser(user: IUserDto) {
+  createUser(user: CreateUserDto) {
     return this.usersRepository.createUser(user);
   }
 
-  updateUser(id: string, user: IUserDto) {
+  updateUser(id: string, user: CreateUserDto) {
     return this.usersRepository.updateUser(id, user);
   }
 
@@ -27,7 +27,7 @@ export class UsersService {
     return this.usersRepository.deleteUser(id);
   }
 
-  loginUser(userInfo) {
+  loginUser(userInfo: LoginUserDto) {
     return this.usersRepository.loginUser(userInfo);
   }
 

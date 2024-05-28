@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post, UseInterceptors } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
-import ICategoryDto from './categoriesDto';
+import { CreateCategoryDto } from './dtos/CreateCategory.dto';
 import { PreloadCategoriesInterceptor } from 'src/interceptors/preloadCategories.interceptor';
 
 @Controller('categories')
@@ -13,7 +13,7 @@ export class CategoriesController {
   }
 
   @Post()
-  addCategory(@Body() category: ICategoryDto) {
+  addCategory(@Body() category: CreateCategoryDto) {
     return this.categoriesService.addCategory(category);
   }
 

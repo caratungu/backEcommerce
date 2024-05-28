@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Category } from './categories.entity';
 import { Repository } from 'typeorm';
-import ICategoryDto from './categoriesDto';
+import { CreateCategoryDto } from './dtos/CreateCategory.dto';
 
 @Injectable()
 export class CategoriesRepository {
@@ -12,12 +12,20 @@ export class CategoriesRepository {
   ) {}
 
   async getCategories() {
-    return await this.categoriesRepository.find();
+    try {
+      return await this.categoriesRepository.find();
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
   }
-
-  async addCategory(category: ICategoryDto) {
-    await this.categoriesRepository.save(category);
-    return 'Categoría creada';
+  
+  async addCategory(category: CreateCategoryDto) {
+    try {
+      await this.categoriesRepository.save(category);
+      return 'Categoría creada';
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
   }
 
   async preloadCategories(categories) {

@@ -1,7 +1,8 @@
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
 import axios from 'axios';
-import { products } from './dB/productsDB';
+import * as fs from 'fs';
+import * as path from 'path';
 
 @Injectable()
 export class AppListenerService implements OnApplicationBootstrap {
@@ -15,6 +16,10 @@ export class AppListenerService implements OnApplicationBootstrap {
   @OnEvent('app.ready')
   async handleAppReadyEvent() {
     try {
+      const filePath = path.join(__dirname,'..','src','dB','productsDB.json');
+      const rawData = fs.readFileSync(filePath);
+      const products = JSON.parse(rawData.toString())
+      
       await axios.post('http://localhost:3000/categories/seeder', products);
       console.log('Categories seeder request sent successfully.');
 

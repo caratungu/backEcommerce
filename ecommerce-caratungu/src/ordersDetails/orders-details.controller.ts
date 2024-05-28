@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { OrdersDetailsService } from './orders-details.service';
-import IOrderDetailDto from './orders-detailsDto';
+import { OrderDetailDto } from './dtos/orders-details.dto';
 
 @Controller('orders-details')
 export class OrdersDetailsController {
@@ -12,7 +12,7 @@ export class OrdersDetailsController {
   }
 
   @Post()
-  createOrderDetails(@Body() orderDetails: IOrderDetailDto) {
+  createOrderDetails(@Body() orderDetails: OrderDetailDto) {
     return this.ordersDetailsService.createOrderDetails(orderDetails);
   }
 }

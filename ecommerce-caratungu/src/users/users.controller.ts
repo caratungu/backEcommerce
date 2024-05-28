@@ -3,17 +3,18 @@ import {
   Controller,
   Delete,
   Get,
+  HttpException,
+  HttpStatus,
   Param,
+  ParseUUIDPipe,
   Post,
   Put,
   Query,
   UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { User } from './user.interface';
-import { ReqUserGuard } from 'src/guards/reqUser.guard';
 import { AuthGuard } from 'src/auth/auth.guard';
-import IUserDto from './usersDto';
+import { CreateUserDto } from './dtos/CreateUser.dto';
 
 @Controller('users')
 export class UsersController {
@@ -21,32 +22,33 @@ export class UsersController {
 
   @Get()
   @UseGuards(AuthGuard)
-  getUsers(@Query('page') page: string = '1', @Query('limit') limit: string = '5') {
+  getUsers(
+    @Query('page') page: string = '1',
+    @Query('limit') limit: string = '5',
+  ) {
     return this.usersService.getUsers(Number(page), Number(limit));
   }
-  
+
   @Get(':id')
   @UseGuards(AuthGuard)
-  getUserById(@Param('id') id: string) {
+  getUserById(@Param('id', ParseUUIDPipe) id: string) {
     return this.usersService.getUserById(id);
   }
-  
+
   @Post()
-  @UseGuards(ReqUserGuard)
-  createUser(@Body() user: IUserDto) {
+  createUser(@Body() user: CreateUserDto) {
     return this.usersService.createUser(user);
   }
-  
+
   @Put(':id')
   @UseGuards(AuthGuard)
-  @UseGuards(ReqUserGuard)
-  updateUser(@Param('id') id: string, @Body() user: IUserDto) {
+  updateUser(@Param('id', ParseUUIDPipe) id: string, @Body() user: CreateUserDto) {
     return this.usersService.updateUser(id, user);
   }
-  
+
   @Delete(':id')
   @UseGuards(AuthGuard)
-  deleteUser(@Param('id') id: string) {
+  deleteUser(@Param('id', ParseUUIDPipe) id: string) {
     return this.usersService.deleteUser(id);
   }
 

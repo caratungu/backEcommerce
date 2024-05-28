@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { OrdersRepository } from './orders.repository';
+import { Product } from 'src/products/products.entity';
 
 @Injectable()
 export class OrdersService {
@@ -9,7 +10,7 @@ export class OrdersService {
     return this.ordersRespository.getOrder(id);
   }
 
-  addOrder(userId: string, products: any[]) {
+  addOrder(userId: string, products: Partial<Product>[]) {
     return this.ordersRespository.addOrder(userId, products)
   }
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ProductsRepository } from './products.repository';
 import { Product } from './products.entity';
-import IProductDto from './productsDto';
+import { CreateProductDto } from './dtos/CreateProduct.dto';
 
 @Injectable()
 export class ProductsService {
@@ -15,7 +15,7 @@ export class ProductsService {
     return this.productsRespository.getProductById(id);
   }
 
-  createProduct(product: IProductDto) {
+  createProduct(product: CreateProductDto) {
     return this.productsRespository.createProduct(product);
   }
 
@@ -27,7 +27,7 @@ export class ProductsService {
     return this.productsRespository.deleteProduct(id);
   }
 
-  preloadProducts (products) {
+  preloadProducts(products: CreateProductDto[]) {
     return this.productsRespository.preloadProducts(products);
   }
 }

@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ReqLoginGuard } from 'src/guards/reqLogin.guard';
+import { LoginUserDto } from './dtos/LoginUser.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -13,7 +14,7 @@ export class AuthController {
 
   @Post('signin')
   @UseGuards(ReqLoginGuard)
-  userSignin(@Body() userInfo) {
+  userSignin(@Body() userInfo: LoginUserDto) {
     return this.authService.userSignin(userInfo);
   }
 }

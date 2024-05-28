@@ -1,5 +1,5 @@
 import { Order } from "src/orders/orders.entity";
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { v4 as uuid } from 'uuid';
 
 @Entity({
@@ -10,6 +10,7 @@ export class User {
   id: string = uuid();
 
   @Column({
+    type: 'varchar',
     length: 50,
     nullable: false,
     unique: true,
@@ -17,12 +18,14 @@ export class User {
   email: string;
   
   @Column({
+    type: 'varchar',
     length: 50,
     nullable: false,
   })
   name: string;
   
   @Column({
+    type: 'varchar',
     length: 20,
     nullable: false,
     select: false,
@@ -38,11 +41,13 @@ export class User {
   phone: number;
   
   @Column({
+    type: 'varchar',
     length: 50,
   })
   country?: string | undefined;
   
   @Column({
+    type: 'varchar',
     length: 50,
   })
   city?: string | undefined;
