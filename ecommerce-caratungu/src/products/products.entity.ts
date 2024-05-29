@@ -38,9 +38,9 @@ export class Product {
 
   @Column({
     type: 'text',
-    default: '',
+    default: 'https://res.cloudinary.com/du92uyaqq/image/upload/v1716950165/ecommerce/productTecno_hm2bub.jpg',
   })
-  imgUrl: string; //! Incluir imagen por defecto
+  imgUrl: string;
 
   @ManyToOne(() => Category, (category) => category.products)
   category: Category | Category['id'];

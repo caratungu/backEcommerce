@@ -11,6 +11,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 import { OrdersModule } from './orders/orders.module';
 import { OrdersDetailsModule } from './ordersDetails/orders-details.module';
 import { PreloadProductsMiddleware } from './middlewares/preloadProducts.middleware';
+import { FilesModule } from './files/files.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { PreloadProductsMiddleware } from './middlewares/preloadProducts.middlew
     CategoriesModule,
     OrdersModule,
     OrdersDetailsModule,
+    FilesModule,
   ],
   controllers: [],
   providers: [AppListenerService],
