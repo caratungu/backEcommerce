@@ -27,8 +27,8 @@ export class UsersService {
     return this.usersRepository.deleteUser(id);
   }
 
-  loginUser(userInfo: LoginUserDto) {
-    return this.usersRepository.loginUser(userInfo);
+  getUserByEmail(email: string) {
+    return this.usersRepository.getUserByEmail(email);
   }
 
   preloadUsers() {

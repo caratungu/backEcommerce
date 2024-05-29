@@ -5,6 +5,7 @@ import {
   NestInterceptor,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
+import { JsonToJS } from 'src/utils/jsonToJS';
 
 @Injectable()
 export class PreloadCategoriesInterceptor implements NestInterceptor {
@@ -13,7 +14,10 @@ export class PreloadCategoriesInterceptor implements NestInterceptor {
     next: CallHandler<any>,
   ): Observable<any> | Promise<Observable<any>> {
     const req = context.switchToHttp().getRequest();
-    const products = req.body;
+    let products = req.body;
+    if (Object.keys(products).length === 0) {
+      products = JsonToJS('productsDB.json')
+    }
     const categories: string [] = products.map((product) => product.category);
     const setCategories = new Set(categories);
     const uniqueCategories = [];

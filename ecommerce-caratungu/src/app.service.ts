@@ -1,8 +1,7 @@
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
 import axios from 'axios';
-import * as fs from 'fs';
-import * as path from 'path';
+import { JsonToJS } from './utils/jsonToJS';
 
 @Injectable()
 export class AppListenerService implements OnApplicationBootstrap {
@@ -16,20 +15,18 @@ export class AppListenerService implements OnApplicationBootstrap {
   @OnEvent('app.ready')
   async handleAppReadyEvent() {
     try {
-      const filePath = path.join(__dirname,'..','src','dB','productsDB.json');
-      const rawData = fs.readFileSync(filePath);
-      const products = JSON.parse(rawData.toString())
+      const products = JsonToJS('productsDB.json')
       
       await axios.post('http://localhost:3000/categories/seeder', products);
-      console.log('Categories seeder request sent successfully.');
+      console.log('Categorias precargadas exitosamente.');
 
       await axios.post('http://localhost:3000/products/seeder', products);
-      console.log('Products seeder request sent successfully.');
+      console.log('Productos precargados exitosamente.');
 
       await axios.post('http://localhost:3000/users/seeder');
-      console.log('Users seeder request sent successfully.');
+      console.log('Usuarios precargados exitosamente.');
     } catch (error) {
-      console.error('Error sending seeder requests:', error);
+      console.error('Error al ejecutar la precarga:', error);
     }
   }
 }

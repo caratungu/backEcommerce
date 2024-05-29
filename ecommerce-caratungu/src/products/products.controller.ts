@@ -40,7 +40,10 @@ export class ProductsController {
 
   @Put(':id')
   @UseGuards(AuthGuard)
-  updateProduct(@Param('id', ParseUUIDPipe) id: string, @Body() product: CreateProductDto) {
+  updateProduct(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() product: CreateProductDto,
+  ) {
     const uProduct: Product = { id, ...product };
     return this.productsService.updateProduct(uProduct);
   }

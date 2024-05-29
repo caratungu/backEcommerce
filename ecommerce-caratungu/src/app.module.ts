@@ -12,6 +12,7 @@ import { OrdersModule } from './orders/orders.module';
 import { OrdersDetailsModule } from './ordersDetails/orders-details.module';
 import { PreloadProductsMiddleware } from './middlewares/preloadProducts.middleware';
 import { FilesModule } from './files/files.module';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -32,6 +33,13 @@ import { FilesModule } from './files/files.module';
     OrdersModule,
     OrdersDetailsModule,
     FilesModule,
+    JwtModule.register({
+      global: true,
+      secret: process.env.JWT_SECRET,
+      signOptions: {
+        expiresIn: '1h'
+      }
+    })
   ],
   controllers: [],
   providers: [AppListenerService],

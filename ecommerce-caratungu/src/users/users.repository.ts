@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { CreateUserDto } from './dtos/CreateUser.dto';
 import { users } from '../dB/usersDB';
 import { LoginUserDto } from 'src/auth/dtos/LoginUser.dto';
+import { Hash } from 'src/utils/hash';
 
 @Injectable()
 export class UsersRepository {
@@ -46,7 +47,9 @@ export class UsersRepository {
 
   async createUser(user: CreateUserDto) {
     try {
-      return await this.usersRepository.save(user);
+      const userCreated = await this.usersRepository.save(user);
+      const { password, ...userWithOutPass } = userCreated;
+      return await this.usersRepository.save(userWithOutPass);
     } catch (error) {
       throw new HttpException(
         error.message,
@@ -94,33 +97,24 @@ export class UsersRepository {
     return `Usuario con id: ${id} eliminado`;
   }
 
-  async loginUser(userInfo: LoginUserDto) {
+  async getUserByEmail(email: string) {
     
-    const userLogin = await this.usersRepository.findOne({
+    const userByEmail = await this.usersRepository.findOne({
       where: {
-        email: userInfo.email,
-      },
-      select: {
-        name: true,
+        email,
+      }, select: {
         password: true,
       }
     });
-    if (userLogin) {
-      if (userLogin.password === userInfo.password) {
-        return `Login exitoso para el usuario ${userLogin.name}`;
-      }
-    }
-    throw new HttpException(
-      'Email o password incorrectos',
-      HttpStatus.BAD_REQUEST,
-    );
+    return userByEmail;
   }
 
   async preloadUsers() {
     const usersInDB: CreateUserDto[] = await this.usersRepository.find();
     if (usersInDB.length === 0) {
       for (const user of users) {
-        await this.usersRepository.save(user);
+        const passwordHashed = await Hash(user.password)
+        await this.usersRepository.save({ ...user, password:passwordHashed});
       }
       return 'Precarga de usuarios realizada';
     }
