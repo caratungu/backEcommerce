@@ -52,6 +52,12 @@ export class User {
   })
   city?: string | undefined;
 
+  @Column({
+    default: false,
+    select:false,
+  })
+  is_admin: boolean;
+
   @OneToMany(() => Order, (order) => order.user)
   orders: Order[];
 }

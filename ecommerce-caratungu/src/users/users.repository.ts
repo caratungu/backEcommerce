@@ -14,7 +14,19 @@ export class UsersRepository {
   ) {}
 
   async getUsers(page: number, limit: number) {
-    const users = await this.usersRepository.find();
+    const users = await this.usersRepository.find({
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        address: true,
+        phone: true,
+        country: true,
+        city: true,
+        is_admin: true,
+        orders: true,
+      }
+    });
     const start = (page - 1) * limit;
     const end = start + limit;
     if (start >= users.length) {
@@ -103,7 +115,10 @@ export class UsersRepository {
       where: {
         email,
       }, select: {
+        id: true,
+        email: true,
         password: true,
+        is_admin: true,
       }
     });
     return userByEmail;

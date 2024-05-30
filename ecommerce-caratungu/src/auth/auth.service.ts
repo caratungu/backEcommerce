@@ -11,6 +11,7 @@ import { CreateUserDto } from 'src/users/dtos/CreateUser.dto';
 import { Hash } from 'src/utils/hash';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import { Role } from 'src/roles.enum';
 
 @Injectable()
 export class AuthService {
@@ -22,7 +23,8 @@ export class AuthService {
 
   async signIn(loginInfo: LoginUserDto) {
     const userByEmail = await this.usersService.getUserByEmail(loginInfo.email);
-
+    console.log(userByEmail);
+    
     if (!userByEmail) throw new BadRequestException('Credenciales inválidas');
 
     const isPassCorrect = await bcrypt.compare(
@@ -34,7 +36,8 @@ export class AuthService {
 
     const userPayload = {
       id: userByEmail.id,
-      email: loginInfo.email,
+      email: userByEmail.email,
+      roles: [userByEmail.is_admin ? Role.ADMIN : Role.USER]
     };
 
     const token = this.jwtService.sign(userPayload);
