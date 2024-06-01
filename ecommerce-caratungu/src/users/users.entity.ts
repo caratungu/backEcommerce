@@ -1,9 +1,15 @@
-import { Order } from "src/orders/orders.entity";
-import { Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Order } from 'src/orders/orders.entity';
+import {
+  Column,
+  DeleteDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { v4 as uuid } from 'uuid';
 
 @Entity({
-    name: 'users'
+  name: 'users',
 })
 export class User {
   @PrimaryGeneratedColumn('uuid')
@@ -16,14 +22,14 @@ export class User {
     unique: true,
   })
   email: string;
-  
+
   @Column({
     type: 'varchar',
     length: 50,
     nullable: false,
   })
   name: string;
-  
+
   @Column({
     type: 'varchar',
     length: 100,
@@ -31,21 +37,21 @@ export class User {
     select: false,
   })
   password: string;
-  
+
   @Column()
   address: string;
-  
+
   @Column({
-    type: "integer"
+    type: 'integer',
   })
   phone: number;
-  
+
   @Column({
     type: 'varchar',
     length: 50,
   })
   country?: string | undefined;
-  
+
   @Column({
     type: 'varchar',
     length: 50,
@@ -54,9 +60,14 @@ export class User {
 
   @Column({
     default: false,
-    select:false,
+    select: false,
   })
   is_admin: boolean;
+
+  @DeleteDateColumn({
+    nullable: true,
+  })
+  deleteDate?: Date;
 
   @OneToMany(() => Order, (order) => order.user)
   orders: Order[];

@@ -20,7 +20,9 @@ export class AuthGuard implements CanActivate {
     throw new UnauthorizedException('No se encuentra header de autorización');
   }
 
-  const token = req.headers['authorization']?.split(' ')[1] ?? '';
+  const [type, token] = req.headers['authorization']?.split(' ');
+
+  if (type !== 'Bearer') throw new UnauthorizedException('Tipo de token no válido')
 
   if (!token) throw new UnauthorizedException ('Bearer token no encontrado')
 

@@ -4,7 +4,9 @@ import { ReqLoginGuard } from 'src/guards/reqLogin.guard';
 import { LoginUserDto } from './dtos/LoginUser.dto';
 import { CreateUserDto } from 'src/users/dtos/CreateUser.dto';
 import { SignUpInterceptor } from 'src/interceptors/signup.interceptor';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -16,7 +18,7 @@ export class AuthController {
   }
 
   @Post('signup')
-  @UseInterceptors(SignUpInterceptor)
+  // @UseInterceptors(SignUpInterceptor)
   signUp(@Body() userInfo: CreateUserDto) {
     return this.authService.signUp(userInfo)
   }

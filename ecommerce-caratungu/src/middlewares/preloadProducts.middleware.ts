@@ -1,4 +1,4 @@
-import { Injectable, NestMiddleware } from '@nestjs/common';
+import { BadRequestException, Injectable, NestMiddleware } from '@nestjs/common';
 import { NextFunction, Request, Response } from 'express';
 import { Product } from 'src/products/products.entity';
 import { JsonToJS } from 'src/utils/jsonToJS';
@@ -16,7 +16,7 @@ export class PreloadProductsMiddleware implements NestMiddleware {
       req.body = products;
       next();
     } else {
-      console.log('Dos o más Productos tienen el mismo nombre'); //! Arrojar error cuando sea el momento
+      throw new BadRequestException('Dos o más Productos tienen el mismo nombre')
     }
   }
 }

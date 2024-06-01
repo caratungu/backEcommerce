@@ -51,7 +51,7 @@ export class OrdersRepository {
           const product: Product = await this.productsService.getProductById(productId.id);
           if (product.stock > 0) {
             product.stock -= 1;
-            newOrderDetail.price = Number(newOrderDetail.price) + Number(product.price);
+            newOrderDetail.price = Math.round((Number(newOrderDetail.price) + Number(product.price)+Number.EPSILON)*100)/100;
             await this.productsService.updateProduct(product)
             newOrderDetail.products.push(product)
           }

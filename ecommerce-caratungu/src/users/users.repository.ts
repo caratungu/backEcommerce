@@ -1,11 +1,15 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './users.entity';
 import { Repository } from 'typeorm';
-import { CreateUserDto } from './dtos/CreateUser.dto';
 import { users } from '../dB/usersDB';
-import { LoginUserDto } from 'src/auth/dtos/LoginUser.dto';
 import { Hash } from 'src/utils/hash';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersRepository {
@@ -25,7 +29,7 @@ export class UsersRepository {
         city: true,
         is_admin: true,
         orders: true,
-      }
+      },
     });
     const start = (page - 1) * limit;
     const end = start + limit;
@@ -57,20 +61,17 @@ export class UsersRepository {
     }
   }
 
-  async createUser(user: CreateUserDto) {
+  async createUser(user: Partial<User>) {
     try {
       const userCreated = await this.usersRepository.save(user);
       const { password, ...userWithOutPass } = userCreated;
       return await this.usersRepository.save(userWithOutPass);
     } catch (error) {
-      throw new HttpException(
-        error.message,
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
-  async updateUser(id: string, uUser: CreateUserDto) {
+  async updateUser(id: string, uUser: Partial<User>) {
     const user = await this.usersRepository.findOne({
       where: { id },
     });
@@ -91,6 +92,30 @@ export class UsersRepository {
     );
   }
 
+  async restoreUser(email: string, password: string) {
+    const userToRestore = await this.usersRepository
+      .createQueryBuilder('user')
+      .withDeleted()
+      .where('user.email = :email', { email })
+      .andWhere('user.deleteDate IS NOT NULL')
+      .select(['user.password','user.id'])
+      .getOne();
+
+    if (!userToRestore)
+      throw new BadRequestException(
+        'Credenciales inválidad, no es posible tramitar la restauración.',
+      );
+
+    if (await bcrypt.compare(password, userToRestore.password)) {
+      await this.usersRepository.restore(userToRestore.id);
+      return { message: `Usuario ${email} restablecido` };
+    } else {
+      throw new BadRequestException(
+        'Credenciales inválidad, no es posible tramitar la restauración.',
+      );
+    }
+  }
+
   async deleteUser(id: string) {
     const userToDelete = await this.usersRepository.findOne({
       where: { id },
@@ -101,35 +126,32 @@ export class UsersRepository {
         HttpStatus.BAD_REQUEST,
       );
     }
-    await this.usersRepository.delete(
-      await this.usersRepository.findOne({
-        where: { id },
-      }),
-    );
+
+    await this.usersRepository.softDelete(userToDelete.id);
     return `Usuario con id: ${id} eliminado`;
   }
 
   async getUserByEmail(email: string) {
-    
     const userByEmail = await this.usersRepository.findOne({
       where: {
         email,
-      }, select: {
+      },
+      select: {
         id: true,
         email: true,
         password: true,
         is_admin: true,
-      }
+      },
     });
     return userByEmail;
   }
 
   async preloadUsers() {
-    const usersInDB: CreateUserDto[] = await this.usersRepository.find();
+    const usersInDB: Partial<User>[] = await this.usersRepository.find();
     if (usersInDB.length === 0) {
       for (const user of users) {
-        const passwordHashed = await Hash(user.password)
-        await this.usersRepository.save({ ...user, password:passwordHashed});
+        const passwordHashed = await Hash(user.password);
+        await this.usersRepository.save({ ...user, password: passwordHashed });
       }
       return 'Precarga de usuarios realizada';
     }

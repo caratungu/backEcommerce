@@ -5,7 +5,6 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
-import { LoginUserDto } from './dtos/LoginUser.dto';
 import { AuthRepository } from './auth.repository';
 import { CreateUserDto } from 'src/users/dtos/CreateUser.dto';
 import { Hash } from 'src/utils/hash';
@@ -21,14 +20,14 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async signIn(loginInfo: LoginUserDto) {
-    const userByEmail = await this.usersService.getUserByEmail(loginInfo.email);
-    console.log(userByEmail);
+  async signIn({ email, password}) {
+    
+    const userByEmail = await this.usersService.getUserByEmail(email);
     
     if (!userByEmail) throw new BadRequestException('Credenciales inválidas');
-
+    
     const isPassCorrect = await bcrypt.compare(
-      loginInfo.password,
+      password,
       userByEmail.password,
     );
 
@@ -46,26 +45,31 @@ export class AuthService {
   }
 
   async signUp(userInfo: CreateUserDto) {
-    const userByEmail = await this.usersService.getUserByEmail(userInfo.email);
-    if (userByEmail) {
-      throw new HttpException(
-        'Ya existe un usuario registrado con ese email',
-        HttpStatus.BAD_REQUEST,
-      );
-    } else {
-      const passHashed = await Hash(userInfo.password);
-
-      if (!passHashed) {
+    if (userInfo.password === userInfo.confirmPass) {
+      const userByEmail = await this.usersService.getUserByEmail(userInfo.email);
+      if (userByEmail) {
         throw new HttpException(
-          'Error al hashear la password',
-          HttpStatus.INTERNAL_SERVER_ERROR,
+          'Ya existe un usuario registrado con ese email',
+          HttpStatus.BAD_REQUEST,
         );
       } else {
-        return this.authRepository.signUp({
-          ...userInfo,
-          password: passHashed,
-        });
+        const passHashed = await Hash(userInfo.password);
+  
+        if (!passHashed) {
+          throw new HttpException(
+            'Error al hashear la password',
+            HttpStatus.INTERNAL_SERVER_ERROR,
+          );
+        } else {
+          const { confirmPass, ...userToCreate } = userInfo
+          return this.authRepository.signUp({
+            ...userToCreate,
+            password: passHashed,
+          });
+        }
       }
+    } else {
+      throw new BadRequestException('Error al validar las contraseñas ingresadas')
     }
   }
 }
