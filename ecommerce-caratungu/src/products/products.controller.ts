@@ -12,11 +12,11 @@ import {
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { Product } from './products.entity';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { AuthGuard } from '../auth/auth.guard';
 import { CreateProductDto } from './dtos/CreateProduct.dto';
-import { Roles } from 'src/decorators/roles.decorator';
-import { Role } from 'src/roles.enum';
-import { RolesGuard } from 'src/guards/roles.guard';
+import { Roles } from '../decorators/roles.decorator';
+import { Role } from '../roles.enum';
+import { RolesGuard } from '../guards/roles.guard';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Products')

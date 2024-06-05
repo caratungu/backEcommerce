@@ -1,9 +1,9 @@
-import { Body, Controller, Get, Post, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards, UseInterceptors } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { ReqLoginGuard } from 'src/guards/reqLogin.guard';
+import { ReqLoginGuard } from '../guards/reqLogin.guard';
 import { LoginUserDto } from './dtos/LoginUser.dto';
-import { CreateUserDto } from 'src/users/dtos/CreateUser.dto';
-import { SignUpInterceptor } from 'src/interceptors/signup.interceptor';
+import { CreateUserDto } from '../users/dtos/CreateUser.dto';
+// import { SignUpInterceptor } from '../interceptors/signup.interceptor';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Auth')

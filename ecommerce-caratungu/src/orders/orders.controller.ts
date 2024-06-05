@@ -1,9 +1,9 @@
 import { Body, Controller, Get, Param, ParseUUIDPipe, Post, UseGuards, UseInterceptors } from '@nestjs/common';
 import { OrdersService } from './orders.service';
-import { AddOrderInterceptor } from 'src/interceptors/addOrder.interceptor';
-import { GetOrderInterceptor } from 'src/interceptors/getOrder.interceptor';
+import { AddOrderInterceptor } from '../interceptors/addOrder.interceptor';
+import { GetOrderInterceptor } from '../interceptors/getOrder.interceptor';
 import { CreateOrderDto } from './dtos/CreateOrder.dto';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { AuthGuard } from '../auth/auth.guard';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Orders')

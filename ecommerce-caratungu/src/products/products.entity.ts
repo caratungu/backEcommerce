@@ -1,4 +1,4 @@
-import { Category } from 'src/categories/categories.entity';
+import { Category } from '../categories/categories.entity';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 

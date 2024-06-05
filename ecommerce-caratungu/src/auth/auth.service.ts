@@ -4,13 +4,13 @@ import {
   HttpStatus,
   Injectable,
 } from '@nestjs/common';
-import { UsersService } from 'src/users/users.service';
+import { UsersService } from '../users/users.service';
 import { AuthRepository } from './auth.repository';
-import { CreateUserDto } from 'src/users/dtos/CreateUser.dto';
-import { Hash } from 'src/utils/hash';
+import { CreateUserDto } from '../users/dtos/CreateUser.dto';
+import { Hash } from '../utils/hash';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { Role } from 'src/roles.enum';
+import { Role } from '../roles.enum';
 
 @Injectable()
 export class AuthService {

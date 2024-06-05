@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable, NestMiddleware } from '@nestjs/common';
 import { NextFunction, Request, Response } from 'express';
-import { Product } from 'src/products/products.entity';
-import { JsonToJS } from 'src/utils/jsonToJS';
+import { Product } from '../products/products.entity';
+import { JsonToJS } from '../utils/jsonToJS';
 
 @Injectable()
 export class PreloadProductsMiddleware implements NestMiddleware {

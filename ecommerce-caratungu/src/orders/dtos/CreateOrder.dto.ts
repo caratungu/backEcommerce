@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsArray, IsNotEmpty, IsUUID, ValidateNested } from 'class-validator';
-import { Product } from 'src/products/products.entity';
+import { IsArray, IsNotEmpty, IsUUID } from 'class-validator';
+import { Product } from '../../products/products.entity';
 
 export class CreateOrderDto {
   @IsNotEmpty({ message: 'El userId no puede estar vacío' })

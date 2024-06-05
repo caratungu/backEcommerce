@@ -2,11 +2,11 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Order } from './orders.entity';
 import { Repository } from 'typeorm';
-import { UsersService } from 'src/users/users.service';
-import { ProductsService } from 'src/products/products.service';
-import { Product } from 'src/products/products.entity';
-import { OrdersDetailsService } from 'src/ordersDetails/orders-details.service';
-import { OrderDetail } from 'src/ordersDetails/orders-details.entity';
+import { UsersService } from '../users/users.service';
+import { ProductsService } from '../products/products.service';
+import { Product } from '../products/products.entity';
+import { OrdersDetailsService } from '../ordersDetails/orders-details.service';
+import { OrderDetail } from '../ordersDetails/orders-details.entity';
 
 @Injectable()
 export class OrdersRepository {

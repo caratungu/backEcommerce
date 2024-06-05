@@ -5,7 +5,7 @@ import {
   NestInterceptor,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { JsonToJS } from 'src/utils/jsonToJS';
+import { JsonToJS } from '../utils/jsonToJS';
 
 @Injectable()
 export class PreloadCategoriesInterceptor implements NestInterceptor {

@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { FilesRepository } from './files.repository';
-import { ProductsService } from 'src/products/products.service';
-import { Product } from 'src/products/products.entity';
+import { ProductsService } from '../products/products.service';
+import { Product } from '../products/products.entity';
 
 @Injectable()
 export class FilesService {

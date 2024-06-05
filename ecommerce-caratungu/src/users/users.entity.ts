@@ -1,4 +1,4 @@
-import { Order } from 'src/orders/orders.entity';
+import { Order } from '../orders/orders.entity';
 import {
   Column,
   DeleteDateColumn,
