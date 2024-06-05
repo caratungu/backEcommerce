@@ -9,6 +9,10 @@ export class CategoriesService {
   getCategories() {
     return this.categoriesRepository.getCategories();
   }
+  
+  getCategoryByName(category: string) {
+    return this.categoriesRepository.getCategoryByName(category);
+  }
 
   addCategory(category: CreateCategoryDto) {
     return this.categoriesRepository.addCategory(category);

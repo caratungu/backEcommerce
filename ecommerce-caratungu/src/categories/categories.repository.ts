@@ -19,6 +19,18 @@ export class CategoriesRepository {
     }
   }
   
+  async getCategoryByName(category: string) {
+    try {
+      return await this.categoriesRepository.findOne({
+        where: {
+          name: category
+        }
+      });
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+  }
+  
   async addCategory(category: CreateCategoryDto) {
     try {
       await this.categoriesRepository.save(category);
