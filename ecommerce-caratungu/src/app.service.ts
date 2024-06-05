@@ -17,14 +17,14 @@ export class AppListenerService implements OnApplicationBootstrap {
     try {
       const products = JsonToJS('productsDB.json')
       
-      await axios.post('http://localhost:3000/categories/seeder', products);
-      console.log('Categorias precargadas exitosamente.');
+      const resCategories = await axios.post('http://localhost:3000/categories/seeder', products);
+      console.log(resCategories.data);
 
-      await axios.post('http://localhost:3000/products/seeder', products);
-      console.log('Productos precargados exitosamente.');
+      const resProducts = await axios.post('http://localhost:3000/products/seeder', products);
+      console.log(resProducts.data);
 
-      await axios.post('http://localhost:3000/users/seeder');
-      console.log('Usuarios precargados exitosamente.');
+      const resUsers = await axios.post('http://localhost:3000/users/seeder');
+      console.log(resUsers.data);
     } catch (error) {
       console.error('Error al ejecutar la precarga:', error);
     }
