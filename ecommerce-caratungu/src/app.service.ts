@@ -8,7 +8,6 @@ export class AppListenerService implements OnApplicationBootstrap {
   constructor(private readonly eventEmitter: EventEmitter2) {}
 
   async onApplicationBootstrap() {
-    // Emitir un evento cuando la aplicación esté completamente inicializada
     this.eventEmitter.emit('app.ready');
   }
 

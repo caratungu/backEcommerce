@@ -17,7 +17,7 @@ async function bootstrap() {
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Ecommerce - Caratungu')
-    .setDescription('Esta es la documentación correspondiente a la API para un eccomerce, implementada como proyecto individual del módulo 4, de la especialidad Backen en la carrera Fullstack Developer en Henry')
+    .setDescription('Esta es la documentación correspondiente a la API para un eccomerce, implementada como proyecto individual del módulo 4, de la especialidad Backen en la carrera Fullstack Developer en Henry. \nAl iniciar la app se realiza una validación respecto a si existe o no información en la base de datos de Categorías, Productos y Usuarios, en caso de estar vacía, se hará una precarga para poder hacer pruebas. Si ya hay información no se realizará la precarga.')
     .setVersion(version)
     .addBearerAuth()
     .build()
