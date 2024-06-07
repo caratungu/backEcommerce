@@ -1,5 +1,5 @@
 import { Category } from '../../categories/entities/categories.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 
 @Entity({
@@ -44,5 +44,6 @@ export class Product {
   imgUrl: string;
 
   @ManyToOne(() => Category, (category) => category.products)
+  @JoinColumn({ name: 'category_id' })
   category: Category | Category['id'];
 }

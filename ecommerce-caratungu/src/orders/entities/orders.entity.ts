@@ -21,9 +21,10 @@ export class Order {
   date: Date;
 
   @ManyToOne(() => User, (user) => user.orders)
+  @JoinColumn({ name: 'user_id' })
   user: User | User['id'];
 
   @OneToOne(() => OrderDetail)
-  @JoinColumn()
+  @JoinColumn({ name: 'order_detail_id'})
   orderDetail: OrderDetail | OrderDetail['id'];
 }
