@@ -18,7 +18,7 @@ export class CategoriesService {
     return this.categoriesRepository.addCategory(category);
   }
 
-  preloadCategories(categories) {
+  preloadCategories(categories: { name: string }[]) {
     return this.categoriesRepository.preloadCategories(categories);
   }
 }

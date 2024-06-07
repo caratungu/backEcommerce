@@ -6,7 +6,7 @@ import { UsersService } from '../users/users.service';
 export class AuthRepository {
   constructor(private readonly usersService: UsersService) {}
 
-  async signUp(userInfo: Partial<User>) {
+  async signUp(userInfo: Partial<User>): Promise<Partial<User>> {
     const userCreated = await this.usersService.createUser(userInfo);
     const { is_admin, ...user } = userCreated;
     return user;

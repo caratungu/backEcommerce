@@ -12,7 +12,7 @@ export class ProductsRepository {
     private readonly categoriesService: CategoriesService,
   ) {}
 
-  async getProducts(page: number, limit: number) {
+  async getProducts(page: number, limit: number): Promise<Product[]> {
     const start = (page - 1) * limit;
     const end = start + limit;
     const products = await this.productsRepository.find({
@@ -29,7 +29,7 @@ export class ProductsRepository {
     return products.slice(start, end);
   }
 
-  async getProductById(id: string) {
+  async getProductById(id: string): Promise<Product> {
     const product = await this.productsRepository.findOne({
       where: {
         id,
@@ -45,7 +45,7 @@ export class ProductsRepository {
     }
   }
 
-  async createProduct(product: CreateProductDto) {
+  async createProduct(product: CreateProductDto): Promise<{ message: string, product: Product}> {
     const productNameExist = await this.productsRepository.findOne({
       where: {
         name: product.name,
@@ -57,7 +57,7 @@ export class ProductsRepository {
       );
       product.category = category.id;
       const newProduct = await this.productsRepository.save(product);
-      return { message: 'Producto creado', ...newProduct };
+      return { message: 'Producto creado', product: newProduct };
     } else {
       throw new HttpException(
         'Ya existe un producto con ese nombre',
@@ -66,7 +66,7 @@ export class ProductsRepository {
     }
   }
 
-  async updateProduct(uProduct: Product) {
+  async updateProduct(uProduct: Product): Promise<{ message: string, id: string}> {
     const productUpdate = await this.productsRepository.findOne({
       where: {
         id: uProduct.id,
@@ -88,7 +88,7 @@ export class ProductsRepository {
     }
   }
 
-  async deleteProduct(id: string) {
+  async deleteProduct(id: string): Promise<string> {
     const productDelete = await this.productsRepository.findOne({
       where: {
         id,
@@ -105,7 +105,7 @@ export class ProductsRepository {
     }
   }
 
-  async preloadProducts(products: CreateProductDto[]) {
+  async preloadProducts(products: CreateProductDto[]): Promise<string> {
     const productsInDB = await this.productsRepository.find();
     if (productsInDB.length === 0) {
       for (const product of products) {

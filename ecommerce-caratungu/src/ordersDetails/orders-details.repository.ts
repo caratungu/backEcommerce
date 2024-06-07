@@ -11,7 +11,7 @@ export class OrdersDetailsRepository {
     private ordersDetailsRepository: Repository<OrderDetail>,
   ) {}
 
-  async getOrderDetailsByID(id: string) {
+  async getOrderDetailsByID(id: string): Promise<OrderDetail> {
     const orderDetails = await this.ordersDetailsRepository.findOne({
       where: { id },
     });
@@ -22,7 +22,7 @@ export class OrdersDetailsRepository {
     }
   }
 
-  async createOrderDetails(orderDetails: OrderDetailDto) {
+  async createOrderDetails(orderDetails: OrderDetailDto): Promise<OrderDetail> {
     try {
       const newOrderDetail =
         await this.ordersDetailsRepository.save(orderDetails);

@@ -17,7 +17,7 @@ export class UsersRepository {
     @InjectRepository(User) private usersRepository: Repository<User>,
   ) {}
 
-  async getUsers(page: number, limit: number) {
+  async getUsers(page: number, limit: number): Promise<User[]> {
     const users = await this.usersRepository.find({
       select: {
         id: true,
@@ -42,7 +42,7 @@ export class UsersRepository {
     return users.slice(start, end);
   }
 
-  async getUserById(id: string) {
+  async getUserById(id: string): Promise<User> {
     const user = await this.usersRepository.findOne({
       where: {
         id,
@@ -71,7 +71,7 @@ export class UsersRepository {
     }
   }
 
-  async updateUser(id: string, uUser: Partial<User>) {
+  async updateUser(id: string, uUser: Partial<User>): Promise<{ message: string, id: string}> {
     const user = await this.usersRepository.findOne({
       where: { id },
     });
@@ -92,7 +92,7 @@ export class UsersRepository {
     );
   }
 
-  async restoreUser(email: string, password: string) {
+  async restoreUser(email: string, password: string): Promise<{ message: string }> {
     const userToRestore = await this.usersRepository
       .createQueryBuilder('user')
       .withDeleted()
@@ -116,7 +116,7 @@ export class UsersRepository {
     }
   }
 
-  async deleteUser(id: string) {
+  async deleteUser(id: string): Promise<string> {
     const userToDelete = await this.usersRepository.findOne({
       where: { id },
     });
@@ -131,7 +131,7 @@ export class UsersRepository {
     return `Usuario con id: ${id} eliminado`;
   }
 
-  async getUserByEmail(email: string) {
+  async getUserByEmail(email: string): Promise<Partial<User>> {
     const userByEmail = await this.usersRepository.findOne({
       where: {
         email,
@@ -146,7 +146,7 @@ export class UsersRepository {
     return userByEmail;
   }
 
-  async preloadUsers() {
+  async preloadUsers(): Promise<string> {
     const usersInDB: Partial<User>[] = await this.usersRepository.find();
     if (usersInDB.length === 0) {
       for (const user of users) {

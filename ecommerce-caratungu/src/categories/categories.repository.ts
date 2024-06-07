@@ -11,7 +11,7 @@ export class CategoriesRepository {
     private categoriesRepository: Repository<Category>,
   ) {}
 
-  async getCategories() {
+  async getCategories(): Promise<Category[]> {
     try {
       return await this.categoriesRepository.find();
     } catch (error) {
@@ -19,7 +19,7 @@ export class CategoriesRepository {
     }
   }
   
-  async getCategoryByName(category: string) {
+  async getCategoryByName(category: string): Promise<Category> {
     try {
       return await this.categoriesRepository.findOne({
         where: {
@@ -31,7 +31,7 @@ export class CategoriesRepository {
     }
   }
   
-  async addCategory(category: CreateCategoryDto) {
+  async addCategory(category: CreateCategoryDto): Promise<string> {
     try {
       await this.categoriesRepository.save(category);
       return 'Categoría creada';
@@ -40,7 +40,7 @@ export class CategoriesRepository {
     }
   }
 
-  async preloadCategories(categories) {
+  async preloadCategories(categories: { name: string }[]): Promise<string> {
     const cats = await this.categoriesRepository.find();
     if (cats.length === 0) {
       for (const category of categories) {

@@ -11,6 +11,7 @@ import { Hash } from '../utils/hash';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { Role } from '../roles.enum';
+import { User } from 'src/users/entities/users.entity';
 
 @Injectable()
 export class AuthService {
@@ -20,7 +21,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async signIn({ email, password}) {
+  async signIn({ email, password}): Promise<{succes: string, token: string}> {
     
     const userByEmail = await this.usersService.getUserByEmail(email);
     
@@ -44,7 +45,7 @@ export class AuthService {
     return ({succes: 'Acceso autorizado', token});
   }
 
-  async signUp(userInfo: CreateUserDto) {
+  async signUp(userInfo: CreateUserDto): Promise<Partial<User>> {
     if (userInfo.password === userInfo.confirmPass) {
       const userByEmail = await this.usersService.getUserByEmail(userInfo.email);
       if (userByEmail) {

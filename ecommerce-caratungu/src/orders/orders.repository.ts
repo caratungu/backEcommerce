@@ -17,7 +17,7 @@ export class OrdersRepository {
     private readonly ordersDetailsService: OrdersDetailsService,
   ) {}
 
-  async getOrder(id: string) {
+  async getOrder(id: string): Promise<Order> {
     const order = await this.ordersRepository.findOne({
       where: {
         id,
@@ -38,7 +38,7 @@ export class OrdersRepository {
     }
   }
 
-  async addOrder(userId: string, products: Partial<Product>[]) {
+  async addOrder(userId: string, products: Partial<Product>[]): Promise<{order: Order}> {
     try {
       const user = await this.usersService.getUserById(userId);
       let countProducts = 0;
