@@ -1,5 +1,5 @@
 import { Category } from '../../categories/entities/categories.entity';
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, DeleteDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 
 @Entity({
@@ -42,6 +42,11 @@ export class Product {
       'https://res.cloudinary.com/du92uyaqq/image/upload/v1716950165/ecommerce/productTecno_hm2bub.jpg',
   })
   imgUrl: string;
+
+  @DeleteDateColumn({
+    nullable: true,
+  })
+  deleteDate?: Date;
 
   @ManyToOne(() => Category, (category) => category.products)
   @JoinColumn({ name: 'category_id' })

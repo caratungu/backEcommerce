@@ -95,7 +95,7 @@ export class ProductsRepository {
       },
     });
     if (productDelete) {
-      await this.productsRepository.remove(productDelete);
+      await this.productsRepository.softDelete(productDelete.id);
       return `Producto con id: ${id} eliminado`;
     } else {
       throw new HttpException(

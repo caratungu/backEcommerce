@@ -58,7 +58,8 @@ export class ProductsController {
 
   @ApiBearerAuth()
   @Delete(':id')
-  @UseGuards(AuthGuard)
+  @Roles(Role.ADMIN)
+  @UseGuards(AuthGuard, RolesGuard)
   deleteProduct(@Param('id', ParseUUIDPipe) id: string) {
     return this.productsService.deleteProduct(id);
   }
