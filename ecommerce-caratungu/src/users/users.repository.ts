@@ -5,7 +5,7 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from './users.entity';
+import { User } from './entities/users.entity';
 import { Repository } from 'typeorm';
 import { users } from '../dB/usersDB';
 import { Hash } from '../utils/hash';
@@ -98,7 +98,7 @@ export class UsersRepository {
       .withDeleted()
       .where('user.email = :email', { email })
       .andWhere('user.deleteDate IS NOT NULL')
-      .select(['user.password','user.id'])
+      .select(['user.password', 'user.id'])
       .getOne();
 
     if (!userToRestore)

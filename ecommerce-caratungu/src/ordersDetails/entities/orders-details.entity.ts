@@ -1,5 +1,11 @@
-import { Product } from '../products/products.entity';
-import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Product } from '../../products/entities/products.entity';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { v4 as uuid } from 'uuid';
 
 @Entity({
@@ -19,5 +25,5 @@ export class OrderDetail {
 
   @ManyToMany(() => Product)
   @JoinTable()
-  products: Product[]
+  products: Product[];
 }

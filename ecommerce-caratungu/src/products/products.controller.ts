@@ -11,8 +11,8 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
-import { Product } from './products.entity';
-import { AuthGuard } from '../auth/auth.guard';
+import { Product } from './entities/products.entity';
+import { AuthGuard } from '../auth/guards/auth.guard';
 import { CreateProductDto } from './dtos/CreateProduct.dto';
 import { Roles } from '../decorators/roles.decorator';
 import { Role } from '../roles.enum';

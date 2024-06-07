@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Product } from './products.entity';
+import { Product } from './entities/products.entity';
 import { Repository } from 'typeorm';
 import { CreateProductDto } from './dtos/CreateProduct.dto';
 import { CategoriesService } from '../categories/categories.service';
@@ -21,7 +21,10 @@ export class ProductsRepository {
       },
     });
     if (start >= products.length) {
-      throw new HttpException(`No se encontraron productos en la página ${page}`, HttpStatus.BAD_REQUEST);
+      throw new HttpException(
+        `No se encontraron productos en la página ${page}`,
+        HttpStatus.BAD_REQUEST,
+      );
     }
     return products.slice(start, end);
   }
@@ -35,23 +38,31 @@ export class ProductsRepository {
     if (product) {
       return product;
     } else {
-      throw new HttpException('No existe producto con ese id', HttpStatus.BAD_REQUEST);
+      throw new HttpException(
+        'No existe producto con ese id',
+        HttpStatus.BAD_REQUEST,
+      );
     }
   }
 
   async createProduct(product: CreateProductDto) {
     const productNameExist = await this.productsRepository.findOne({
       where: {
-        name: product.name
-      }
+        name: product.name,
+      },
     });
     if (!productNameExist) {
-      const category = await this.categoriesService.getCategoryByName(product.category);
+      const category = await this.categoriesService.getCategoryByName(
+        product.category,
+      );
       product.category = category.id;
       const newProduct = await this.productsRepository.save(product);
       return { message: 'Producto creado', ...newProduct };
     } else {
-      throw new HttpException('Ya existe un producto con ese nombre', HttpStatus.BAD_REQUEST)
+      throw new HttpException(
+        'Ya existe un producto con ese nombre',
+        HttpStatus.BAD_REQUEST,
+      );
     }
   }
 
@@ -70,7 +81,10 @@ export class ProductsRepository {
       await this.productsRepository.save(productUpdate);
       return { message: 'Producto actualizado', id: productUpdate.id };
     } else {
-      throw new HttpException('No existe producto con ese ID', HttpStatus.BAD_REQUEST);
+      throw new HttpException(
+        'No existe producto con ese ID',
+        HttpStatus.BAD_REQUEST,
+      );
     }
   }
 
@@ -84,7 +98,10 @@ export class ProductsRepository {
       await this.productsRepository.remove(productDelete);
       return `Producto con id: ${id} eliminado`;
     } else {
-      throw new HttpException('No existe producto con ese ID', HttpStatus.BAD_REQUEST);
+      throw new HttpException(
+        'No existe producto con ese ID',
+        HttpStatus.BAD_REQUEST,
+      );
     }
   }
 
@@ -92,7 +109,9 @@ export class ProductsRepository {
     const productsInDB = await this.productsRepository.find();
     if (productsInDB.length === 0) {
       for (const product of products) {
-        const category = await this.categoriesService.getCategoryByName(product.category);
+        const category = await this.categoriesService.getCategoryByName(
+          product.category,
+        );
         product.category = category.id;
         await this.productsRepository.save(product);
       }

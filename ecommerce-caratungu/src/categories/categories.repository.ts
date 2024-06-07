@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Category } from './categories.entity';
+import { Category } from './entities/categories.entity';
 import { Repository } from 'typeorm';
 import { CreateCategoryDto } from './dtos/CreateCategory.dto';
 

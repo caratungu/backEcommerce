@@ -1,4 +1,4 @@
-import { Category } from '../categories/categories.entity';
+import { Category } from '../../categories/entities/categories.entity';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 
@@ -31,14 +31,15 @@ export class Product {
   price: number;
 
   @Column({
-    type: "integer",
+    type: 'integer',
     nullable: false,
   })
   stock: number;
 
   @Column({
     type: 'text',
-    default: 'https://res.cloudinary.com/du92uyaqq/image/upload/v1716950165/ecommerce/productTecno_hm2bub.jpg',
+    default:
+      'https://res.cloudinary.com/du92uyaqq/image/upload/v1716950165/ecommerce/productTecno_hm2bub.jpg',
   })
   imgUrl: string;
 

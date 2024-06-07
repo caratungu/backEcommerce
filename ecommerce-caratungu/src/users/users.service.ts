@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { UsersRepository } from './users.repository';
-import { User } from './users.entity';
+import { User } from './entities/users.entity';
 import { CreateUserDto } from './dtos/CreateUser.dto';
 
 @Injectable()
@@ -24,7 +24,9 @@ export class UsersService {
       const { confirmPass, ...userToDB } = user;
       return this.usersRepository.updateUser(id, userToDB);
     } else {
-      throw new BadRequestException('Error al validar las contraseñas ingresadas')
+      throw new BadRequestException(
+        'Error al validar las contraseñas ingresadas',
+      );
     }
   }
 

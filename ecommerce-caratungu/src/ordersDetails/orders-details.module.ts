@@ -3,7 +3,7 @@ import { OrdersDetailsController } from './orders-details.controller';
 import { OrdersDetailsService } from './orders-details.service';
 import { OrdersDetailsRepository } from './orders-details.repository';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { OrderDetail } from './orders-details.entity';
+import { OrderDetail } from './entities/orders-details.entity';
 
 @Module({
     imports: [TypeOrmModule.forFeature([OrderDetail])],

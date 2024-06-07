@@ -12,7 +12,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { AuthGuard } from '../auth/auth.guard';
+import { AuthGuard } from '../auth/guards/auth.guard';
 import { CreateUserDto } from './dtos/CreateUser.dto';
 import { Roles } from '../decorators/roles.decorator';
 import { Role } from '../roles.enum';
@@ -51,7 +51,10 @@ export class UsersController {
   @ApiBearerAuth()
   @Put(':id')
   @UseGuards(AuthGuard)
-  updateUser(@Param('id', ParseUUIDPipe) id: string, @Body() user: CreateUserDto) {
+  updateUser(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() user: CreateUserDto,
+  ) {
     return this.usersService.updateUser(id, user);
   }
 
