@@ -61,76 +61,6 @@ export class UsersRepository {
     }
   }
 
-  async createUser(user: Partial<User>) {
-    try {
-      const userCreated = await this.usersRepository.save(user);
-      const { password, ...userWithOutPass } = userCreated;
-      return await this.usersRepository.save(userWithOutPass);
-    } catch (error) {
-      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-  }
-
-  async updateUser(id: string, uUser: Partial<User>): Promise<{ message: string, id: string}> {
-    const user = await this.usersRepository.findOne({
-      where: { id },
-    });
-    if (user) {
-      user.email = uUser.email;
-      user.name = uUser.name;
-      user.password = uUser.password;
-      user.address = uUser.address;
-      user.phone = uUser.phone;
-      user.country = uUser.country;
-      user.city = uUser.city;
-      await this.usersRepository.save(user);
-      return { message: 'Usuario actualizado', id };
-    }
-    throw new HttpException(
-      'No existe usuario con el ID especificado',
-      HttpStatus.BAD_REQUEST,
-    );
-  }
-
-  async restoreUser(email: string, password: string): Promise<{ message: string }> {
-    const userToRestore = await this.usersRepository
-      .createQueryBuilder('user')
-      .withDeleted()
-      .where('user.email = :email', { email })
-      .andWhere('user.deleteDate IS NOT NULL')
-      .select(['user.password', 'user.id'])
-      .getOne();
-
-    if (!userToRestore)
-      throw new BadRequestException(
-        'Credenciales inválidad, no es posible tramitar la restauración.',
-      );
-
-    if (await bcrypt.compare(password, userToRestore.password)) {
-      await this.usersRepository.restore(userToRestore.id);
-      return { message: `Usuario ${email} restablecido` };
-    } else {
-      throw new BadRequestException(
-        'Credenciales inválidad, no es posible tramitar la restauración.',
-      );
-    }
-  }
-
-  async deleteUser(id: string): Promise<string> {
-    const userToDelete = await this.usersRepository.findOne({
-      where: { id },
-    });
-    if (!userToDelete) {
-      throw new HttpException(
-        'No existe usuario con el ID especificado',
-        HttpStatus.BAD_REQUEST,
-      );
-    }
-
-    await this.usersRepository.softDelete(userToDelete.id);
-    return `Usuario con id: ${id} eliminado`;
-  }
-
   async getUserByEmail(email: string): Promise<Partial<User>> {
     const userByEmail = await this.usersRepository.findOne({
       where: {
@@ -144,6 +74,82 @@ export class UsersRepository {
       },
     });
     return userByEmail;
+  }
+
+  async createUser(user: Partial<User>): Promise<Partial<User>> {
+    try {
+      const userCreated = await this.usersRepository.save(user);
+      const { password, ...userWithOutPass } = userCreated;
+      return userWithOutPass;  
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);  
+    }  
+  }
+
+  async updateUser(
+    id: string,
+    uUser: Partial<User>,  
+  ): Promise<{ message: string; id: string }> {
+    const user = await this.usersRepository.findOne({
+      where: { id },  
+    });
+    if (user) {
+      user.email = uUser.email;
+      user.name = uUser.name;
+      user.password = uUser.password;
+      user.address = uUser.address;
+      user.phone = uUser.phone;
+      user.country = uUser.country;
+      user.city = uUser.city;
+      await this.usersRepository.save(user);
+      return { message: 'Usuario actualizado', id };  
+    }
+    throw new HttpException(
+      'No existe usuario con el ID especificado',
+      HttpStatus.BAD_REQUEST,  
+    );  
+  }
+  
+  async restoreUser(
+    email: string,
+    password: string,  
+  ): Promise<{ message: string }> {
+    const userToRestore = await this.usersRepository
+      .createQueryBuilder('user')
+      .withDeleted()
+      .where('user.email = :email', { email })
+      .andWhere('user.deleteDate IS NOT NULL')
+      .select(['user.password', 'user.id'])
+      .getOne();
+
+    if (!userToRestore)
+      throw new BadRequestException(  
+        'Credenciales inválidad, no es posible tramitar la restauración.',
+      );
+
+    if (await bcrypt.compare(password, userToRestore.password)) {
+      await this.usersRepository.restore(userToRestore.id);
+      return { message: `Usuario ${email} restablecido` };  
+    } else {
+      throw new BadRequestException(
+        'Credenciales inválidad, no es posible tramitar la restauración.',  
+      );  
+    }  
+  }
+
+  async deleteUser(id: string): Promise<string> {
+    const userToDelete = await this.usersRepository.findOne({
+      where: { id },  
+    });
+    if (!userToDelete) {
+      throw new HttpException(
+        'No existe usuario con el ID especificado',
+        HttpStatus.BAD_REQUEST,  
+      );  
+    }
+
+    await this.usersRepository.softDelete(userToDelete.id);
+    return `Usuario con id: ${id} eliminado`;  
   }
 
   async preloadUsers(): Promise<string> {

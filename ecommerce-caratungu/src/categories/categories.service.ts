@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { CategoriesRepository } from './categories.repository';
-import { CreateCategoryDto } from './dtos/CreateCategory.dto';
 
 @Injectable()
 export class CategoriesService {
@@ -14,8 +13,8 @@ export class CategoriesService {
     return this.categoriesRepository.getCategoryByName(category);
   }
 
-  addCategory(category: CreateCategoryDto) {
-    return this.categoriesRepository.addCategory(category);
+  addCategory(name: string) {
+    return this.categoriesRepository.addCategory(name);
   }
 
   preloadCategories(categories: { name: string }[]) {

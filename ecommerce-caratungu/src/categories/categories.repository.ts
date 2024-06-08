@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { BadRequestException, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Category } from './entities/categories.entity';
 import { Repository } from 'typeorm';
@@ -31,9 +31,15 @@ export class CategoriesRepository {
     }
   }
   
-  async addCategory(category: CreateCategoryDto): Promise<string> {
+  async addCategory(name: string): Promise<string> {
     try {
-      await this.categoriesRepository.save(category);
+      const categoryNameExist = await this.categoriesRepository.findOne({
+        where: {
+          name
+        }
+      })
+      if (categoryNameExist) throw new BadRequestException('Ya existe categoría con ese nombre')
+      await this.categoriesRepository.save({ name });
       return 'Categoría creada';
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR)

@@ -16,7 +16,8 @@ export class CategoriesController {
 
   @Post()
   addCategory(@Body() category: CreateCategoryDto) {
-    return this.categoriesService.addCategory(category);
+    const { name } = category
+    return this.categoriesService.addCategory(name);
   }
 
   @Post('seeder')

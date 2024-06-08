@@ -12,6 +12,7 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { Role } from '../roles.enum';
 import { User } from 'src/users/entities/users.entity';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
@@ -19,6 +20,7 @@ export class AuthService {
     private readonly usersService: UsersService,
     private readonly authRepository: AuthRepository,
     private readonly jwtService: JwtService,
+    private readonly configService: ConfigService,
   ) {}
 
   async signIn({ email, password}): Promise<{succes: string, token: string}> {
@@ -40,7 +42,9 @@ export class AuthService {
       roles: [userByEmail.is_admin ? Role.ADMIN : Role.USER]
     };
 
-    const token = this.jwtService.sign(userPayload);
+    const token = this.jwtService.sign(userPayload, {
+      secret: this.configService.get<string>('JWT_SECRET'),
+    });
 
     return ({succes: 'Acceso autorizado', token});
   }

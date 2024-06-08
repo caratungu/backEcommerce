@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { BadRequestException, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from './entities/products.entity';
 import { Repository } from 'typeorm';
@@ -59,10 +59,7 @@ export class ProductsRepository {
       const newProduct = await this.productsRepository.save(product);
       return { message: 'Producto creado', product: newProduct };
     } else {
-      throw new HttpException(
-        'Ya existe un producto con ese nombre',
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new BadRequestException('Ya existe un producto con ese nombre');
     }
   }
 
