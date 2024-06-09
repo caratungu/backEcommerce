@@ -52,10 +52,7 @@ export class UsersRepository {
       },
     });
     if (!user) {
-      throw new HttpException(
-        'No existe usuario con el ID especificado',
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new BadRequestException('No existe usuario con el ID especificado');
     } else {
       return user;
     }

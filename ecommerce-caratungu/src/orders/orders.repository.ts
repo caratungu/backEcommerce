@@ -41,7 +41,7 @@ export class OrdersRepository {
   async addOrder(userId: string, products: Partial<Product>[]): Promise<{order: Order}> {
     try {
       const user = await this.usersService.getUserById(userId);
-      if (!user) throw new BadRequestException('El id de usuario no es válido');
+      
       let countProducts = 0;
       for (const productId of products) {
         const product: Product = await this.productsService.getProductById(
@@ -82,7 +82,7 @@ export class OrdersRepository {
         throw new BadRequestException('Uno o más ID de productos no existen');
       }
     } catch (error) {
-      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new BadRequestException(error.message);
     }
   }
 }
