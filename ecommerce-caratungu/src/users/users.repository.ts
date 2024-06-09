@@ -86,17 +86,14 @@ export class UsersRepository {
     }  
   }
 
-  async updateUser(
-    id: string,
-    uUser: Partial<User>,  
-  ): Promise<{ message: string; id: string }> {
+  async updateUser(id: string, uUser: Partial<User>): Promise<{ message: string; id: string }> {
     const user = await this.usersRepository.findOne({
       where: { id },  
     });
     if (user) {
       user.email = uUser.email;
       user.name = uUser.name;
-      user.password = uUser.password;
+      user.password = await Hash(uUser.password);
       user.address = uUser.address;
       user.phone = uUser.phone;
       user.country = uUser.country;

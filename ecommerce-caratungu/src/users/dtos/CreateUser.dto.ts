@@ -75,7 +75,7 @@ export class CreateUserDto {
   phone: number;
 
   @IsOptional()
-  @Length(5, 20, { message: 'El país debe tener entre 5 y 20 carácteres' })
+  @Length(2, 20, { message: 'El país debe tener entre 5 y 20 carácteres' })
   @ApiProperty({
     description: 'El nombre del país debe tener como mínimo 5 carácteres y no exceder los 20.',
     example: 'Colombia'
@@ -83,7 +83,7 @@ export class CreateUserDto {
   country?: string | undefined;
 
   @IsOptional()
-  @Length(5, 20, { message: 'La ciudad debe tener entre 5 y 20 carácteres' })
+  @Length(2, 20, { message: 'La ciudad debe tener entre 5 y 20 carácteres' })
   @ApiProperty({
     description: 'El nombre de la ciudad debe tener como mínimo 5 carácteres y no exceder los 20.',
     example: 'Bogotá'
