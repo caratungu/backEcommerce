@@ -18,6 +18,7 @@ import { Roles } from '../decorators/roles.decorator';
 import { Role } from '../roles.enum';
 import { RolesGuard } from '../guards/roles.guard';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { FilterPageLimitDto } from 'src/utils/filterPageLimit.dto';
 
 @ApiTags('Products')
 @Controller('products')
@@ -26,10 +27,10 @@ export class ProductsController {
 
   @Get()
   getProducts(
-    @Query('page') page: string = '1',
-    @Query('limit') limit: string = '5',
+    @Query() filterPageLimit: FilterPageLimitDto,
   ) {
-    return this.productsService.getProducts(Number(page), Number(limit));
+    const { page, limit } = filterPageLimit;
+    return this.productsService.getProducts(page, limit);
   }
 
   @Get(':id')

@@ -19,6 +19,7 @@ import { Role } from '../roles.enum';
 import { RolesGuard } from '../guards/roles.guard';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { RestoreUserDto } from './dtos/RestoreUser.dto';
+import { FilterPageLimitDto } from 'src/utils/filterPageLimit.dto';
 
 @ApiTags('Users')
 @Controller('users')
@@ -30,10 +31,10 @@ export class UsersController {
   @Roles(Role.ADMIN)
   @UseGuards(AuthGuard, RolesGuard)
   getUsers(
-    @Query('page') page: string = '1',
-    @Query('limit') limit: string = '5',
+    @Query() filterPageLimit: FilterPageLimitDto,
   ) {
-    return this.usersService.getUsers(Number(page), Number(limit));
+    const { page, limit } = filterPageLimit
+    return this.usersService.getUsers(page, limit);
   }
 
   @ApiBearerAuth()
