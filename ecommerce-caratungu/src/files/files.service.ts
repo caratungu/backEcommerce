@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { BadRequestException, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { FilesRepository } from './files.repository';
 import { ProductsService } from '../products/products.service';
 import { Product } from '../products/entities/products.entity';
@@ -18,10 +18,7 @@ export class FilesService {
       await this.productsService.updateProduct(product);
       return `Imagen almacenada correctamente para el producto ${product.name}`;
     } else {
-      throw new HttpException(
-        'No existe producto con el ID especificado, no es posible cargar la imagen',
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new BadRequestException('No existe producto con el ID especificado, no es posible cargar la imagen');
     }
   }
 }
