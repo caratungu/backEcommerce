@@ -1,8 +1,12 @@
-import { Body, Controller, Get, Post, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards, UseInterceptors } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dtos/CreateCategory.dto';
 import { PreloadCategoriesInterceptor } from '../interceptors/preloadCategories.interceptor';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from 'src/auth/guards/auth.guard';
+import { RolesGuard } from 'src/guards/roles.guard';
+import { Roles } from 'src/decorators/roles.decorator';
+import { Role } from 'src/roles.enum';
 
 @ApiTags('Categories')
 @Controller('categories')
@@ -14,7 +18,10 @@ export class CategoriesController {
     return this.categoriesService.getCategories();
   }
 
+  @ApiBearerAuth()
   @Post()
+  @Roles(Role.ADMIN)
+  @UseGuards(AuthGuard, RolesGuard)
   addCategory(@Body() category: CreateCategoryDto) {
     const { name } = category
     return this.categoriesService.addCategory(name);
@@ -22,7 +29,7 @@ export class CategoriesController {
 
   @Post('seeder')
   @UseInterceptors(PreloadCategoriesInterceptor)
-  preloadCategories(@Body() categories) {
+  preloadCategories(@Body() categories: { name: string }[]) {
     return this.categoriesService.preloadCategories(categories);
   }
 }
