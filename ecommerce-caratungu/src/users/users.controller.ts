@@ -58,7 +58,7 @@ export class UsersController {
     return this.usersService.updateUser(id, user);
   }
 
-  @Patch()
+  @Patch('restore')
   restoreUser(@Body() infoToRestore: RestoreUserDto) {
     const { email, password, confirmPass } = infoToRestore;
     return this.usersService.restoreUser(email, password, confirmPass);
