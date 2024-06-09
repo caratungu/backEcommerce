@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseUUIDPipe, Post } from '@nestjs/common';
 import { OrdersDetailsService } from './orders-details.service';
 import { OrderDetailDto } from './dtos/orders-details.dto';
 import { ApiExcludeEndpoint, ApiTags } from '@nestjs/swagger';
@@ -9,7 +9,7 @@ export class OrdersDetailsController {
   constructor(private readonly ordersDetailsService: OrdersDetailsService) {}
 
   @Get()
-  getOrderDetailsById(@Param('id') id: string) {
+  getOrderDetailsById(@Param('id', ParseUUIDPipe) id: string) {
     return this.ordersDetailsService.getOrderDetailsById(id);
   }
 
