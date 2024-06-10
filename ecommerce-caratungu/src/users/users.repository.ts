@@ -34,10 +34,7 @@ export class UsersRepository {
     const start = (page - 1) * limit;
     const end = start + limit;
     if (start >= users.length) {
-      throw new HttpException(
-        `No existen usuarios para mostrar en la página ${page}`,
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new BadRequestException(`No existen usuarios para mostrar en la página ${page}`);
     }
     return users.slice(start, end);
   }
@@ -98,16 +95,10 @@ export class UsersRepository {
       await this.usersRepository.save(user);
       return { message: 'Usuario actualizado', id };  
     }
-    throw new HttpException(
-      'No existe usuario con el ID especificado',
-      HttpStatus.BAD_REQUEST,  
-    );  
+    throw new BadRequestException('No existe usuario con el ID especificado');  
   }
   
-  async restoreUser(
-    email: string,
-    password: string,  
-  ): Promise<{ message: string }> {
+  async restoreUser(email: string, password: string): Promise<{ message: string }> {
     const userToRestore = await this.usersRepository
       .createQueryBuilder('user')
       .withDeleted()
@@ -136,10 +127,7 @@ export class UsersRepository {
       where: { id },  
     });
     if (!userToDelete) {
-      throw new HttpException(
-        'No existe usuario con el ID especificado',
-        HttpStatus.BAD_REQUEST,  
-      );  
+      throw new BadRequestException('No existe usuario con el ID especificado');  
     }
 
     await this.usersRepository.softDelete(userToDelete.id);

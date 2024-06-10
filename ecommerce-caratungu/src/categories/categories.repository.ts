@@ -27,7 +27,7 @@ export class CategoriesRepository {
         }
       });
     } catch (error) {
-      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR)
+      throw new BadRequestException('No existe una categoría con el nombre indcicado')
     }
   }
   
@@ -42,7 +42,7 @@ export class CategoriesRepository {
       await this.categoriesRepository.save({ name });
       return 'Categoría creada';
     } catch (error) {
-      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR)
+      throw new HttpException(error.message, error.status)
     }
   }
 

@@ -1,4 +1,4 @@
-import { BadRequestException, HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { FilesRepository } from './files.repository';
 import { ProductsService } from '../products/products.service';
 import { Product } from '../products/entities/products.entity';

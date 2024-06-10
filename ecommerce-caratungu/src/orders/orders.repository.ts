@@ -1,4 +1,4 @@
-import { BadRequestException, HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { BadRequestException,  Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Order } from './entities/orders.entity';
 import { Repository } from 'typeorm';
@@ -31,10 +31,7 @@ export class OrdersRepository {
     if (order) {
       return order;
     } else {
-      throw new HttpException(
-        'No existe orden con el ID especificado',
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new BadRequestException('No existe orden con el ID especificado');
     }
   }
 

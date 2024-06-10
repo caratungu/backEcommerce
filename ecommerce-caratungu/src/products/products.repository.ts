@@ -1,4 +1,7 @@
-import { BadRequestException, HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from './entities/products.entity';
 import { Repository } from 'typeorm';
@@ -21,10 +24,7 @@ export class ProductsRepository {
       },
     });
     if (start >= products.length) {
-      throw new HttpException(
-        `No se encontraron productos en la página ${page}`,
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new BadRequestException(`No se encontraron productos en la página ${page}`);
     }
     return products.slice(start, end);
   }
@@ -38,23 +38,25 @@ export class ProductsRepository {
     if (product) {
       return product;
     } else {
-      throw new HttpException(
-        'No existe producto con ese id',
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new BadRequestException('No existe producto con ese id');
     }
   }
 
-  async createProduct(product: CreateProductDto): Promise<{ message: string, product: Product}> {
-    const productNameExist = await this.productsRepository.findOne({
-      where: {
-        name: product.name,
-      },
-    });
+  async createProduct(
+    product: CreateProductDto,
+  ): Promise<{ message: string; product: Product }> {
+    const productNameExist = await this.productsRepository
+      .createQueryBuilder('product')
+      .withDeleted()
+      .where('product.name = :name', { name: product.name })
+      .getOne();
+
     if (!productNameExist) {
       const category = await this.categoriesService.getCategoryByName(
         product.category,
       );
+      if (!category)
+        throw new BadRequestException('Nombre de categoría inválido');
       product.category = category.id;
       const newProduct = await this.productsRepository.save(product);
       return { message: 'Producto creado', product: newProduct };
@@ -63,12 +65,20 @@ export class ProductsRepository {
     }
   }
 
-  async updateProduct(uProduct: Product): Promise<{ message: string, id: string}> {
+  async updateProduct(uProduct: Product): Promise<{ message: string; id: string }> {
     const productUpdate = await this.productsRepository.findOne({
       where: {
         id: uProduct.id,
       },
     });
+    const productNameExist = await this.productsRepository
+      .createQueryBuilder('product')
+      .withDeleted()
+      .where('product.name = :name', { name: uProduct.name })
+      .getOne();
+
+    if (productNameExist && uProduct.id !== productNameExist.id) throw new BadRequestException('El nombre de producto esta asociado a un ID diferente');
+    
     if (productUpdate) {
       productUpdate.name = uProduct.name;
       productUpdate.description = uProduct.description;
@@ -78,10 +88,7 @@ export class ProductsRepository {
       await this.productsRepository.save(productUpdate);
       return { message: 'Producto actualizado', id: productUpdate.id };
     } else {
-      throw new HttpException(
-        'No existe producto con ese ID',
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new BadRequestException('No existe producto con ese ID');
     }
   }
 
@@ -95,10 +102,7 @@ export class ProductsRepository {
       await this.productsRepository.softDelete(productDelete.id);
       return `Producto con id: ${id} eliminado`;
     } else {
-      throw new HttpException(
-        'No existe producto con ese ID',
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new BadRequestException('No existe producto con ese ID');
     }
   }
 

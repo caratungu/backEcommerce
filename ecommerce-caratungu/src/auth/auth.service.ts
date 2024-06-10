@@ -53,10 +53,7 @@ export class AuthService {
     if (userInfo.password === userInfo.confirmPass) {
       const userByEmail = await this.usersService.getUserByEmail(userInfo.email);
       if (userByEmail) {
-        throw new HttpException(
-          'Ya existe un usuario registrado con ese email',
-          HttpStatus.BAD_REQUEST,
-        );
+        throw new BadRequestException('Ya existe un usuario registrado con ese email');
       } else {
         const passHashed = await Hash(userInfo.password);
   

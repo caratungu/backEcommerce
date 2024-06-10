@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { BadGatewayException, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { OrderDetail } from './entities/orders-details.entity';
 import { Repository } from 'typeorm';
@@ -18,14 +18,13 @@ export class OrdersDetailsRepository {
     if (orderDetails) {
       return orderDetails;
     } else {
-      throw new HttpException('No existe ningún detalle de orden con el ID indicado', HttpStatus.BAD_REQUEST)
+      throw new BadGatewayException('No existe ningún detalle de orden con el ID indicado');
     }
   }
 
   async createOrderDetails(orderDetails: OrderDetailDto): Promise<OrderDetail> {
     try {
-      const newOrderDetail =
-        await this.ordersDetailsRepository.save(orderDetails);
+      const newOrderDetail = await this.ordersDetailsRepository.save(orderDetails);
       return newOrderDetail;
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR)
