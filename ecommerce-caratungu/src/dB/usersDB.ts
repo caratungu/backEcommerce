@@ -1,4 +1,4 @@
-import { CreateUserDto } from 'src/users/dtos/CreateUser.dto';
+import { CreateUserDto } from '../users/dtos/CreateUser.dto';
 
 export const users: CreateUserDto[] = [
   { email: "alice.brown@example.com", name: "Alice Brown", password: "Pass*123", confirmPass: "Pass*123", address: "123 Elm St", phone: 555111222, country: "USA", city: "New York" },

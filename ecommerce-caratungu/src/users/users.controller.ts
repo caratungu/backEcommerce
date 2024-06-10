@@ -19,7 +19,7 @@ import { Role } from '../roles.enum';
 import { RolesGuard } from '../guards/roles.guard';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { RestoreUserDto } from './dtos/RestoreUser.dto';
-import { FilterPageLimitDto } from 'src/utils/filterPageLimit.dto';
+import { FilterPageLimitDto } from '../utils/filterPageLimit.dto';
 
 @ApiTags('Users')
 @Controller('users')

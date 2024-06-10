@@ -18,7 +18,7 @@ import { Roles } from '../decorators/roles.decorator';
 import { Role } from '../roles.enum';
 import { RolesGuard } from '../guards/roles.guard';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { FilterPageLimitDto } from 'src/utils/filterPageLimit.dto';
+import { FilterPageLimitDto } from '../utils/filterPageLimit.dto';
 
 @ApiTags('Products')
 @Controller('products')

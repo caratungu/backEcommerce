@@ -3,10 +3,10 @@ import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dtos/CreateCategory.dto';
 import { PreloadCategoriesInterceptor } from '../interceptors/preloadCategories.interceptor';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { AuthGuard } from 'src/auth/guards/auth.guard';
-import { RolesGuard } from 'src/guards/roles.guard';
-import { Roles } from 'src/decorators/roles.decorator';
-import { Role } from 'src/roles.enum';
+import { AuthGuard } from '../auth/guards/auth.guard';
+import { RolesGuard } from '../guards/roles.guard';
+import { Roles } from '../decorators/roles.decorator';
+import { Role } from '../roles.enum';
 
 @ApiTags('Categories')
 @Controller('categories')

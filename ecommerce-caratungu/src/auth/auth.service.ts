@@ -11,7 +11,7 @@ import { Hash } from '../utils/hash';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { Role } from '../roles.enum';
-import { User } from 'src/users/entities/users.entity';
+import { User } from '../users/entities/users.entity';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()

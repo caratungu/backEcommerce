@@ -2,10 +2,10 @@ import { Body, Controller, Get, Param, ParseUUIDPipe, Post, UseGuards } from '@n
 import { OrdersDetailsService } from './orders-details.service';
 import { OrderDetailDto } from './dtos/orders-details.dto';
 import { ApiBearerAuth, ApiExcludeEndpoint, ApiTags } from '@nestjs/swagger';
-import { AuthGuard } from 'src/auth/guards/auth.guard';
-import { RolesGuard } from 'src/guards/roles.guard';
-import { Roles } from 'src/decorators/roles.decorator';
-import { Role } from 'src/roles.enum';
+import { AuthGuard } from '../auth/guards/auth.guard';
+import { RolesGuard } from '../guards/roles.guard';
+import { Roles } from '../decorators/roles.decorator';
+import { Role } from '../roles.enum';
 
 @ApiTags('Orders Details')
 @Controller('orders-details')

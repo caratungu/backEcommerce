@@ -1,4 +1,4 @@
-import { Product } from 'src/products/entities/products.entity';
+import { Product } from '../products/entities/products.entity';
 import { Order } from './entities/orders.entity';
 import { OrdersRepository } from './orders.repository';
 import { OrdersService } from './orders.service';
